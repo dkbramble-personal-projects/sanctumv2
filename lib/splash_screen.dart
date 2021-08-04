@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'navigation_bar.dart';
 import 'data/database_service.dart';
+import 'data/igdb_service.dart';
 
 class RouteSplash extends StatefulWidget {
   @override
@@ -11,9 +12,9 @@ class _RouteSplashState extends State<RouteSplash> {
   bool shouldProceed = false;
 
   _fetchPrefs() async {
-    // await Future.delayed(Duration(seconds: 20));// dummy code showing the wait period while getting the preferences
-    var databaseService = DatabaseService();
-    await databaseService.setupDB();
+    await DatabaseService().setupDB();
+    await IGDBService().getReleaseData();
+
     setState(() {
       shouldProceed = true;//got the prefs; set to some value if needed
     });
@@ -22,7 +23,7 @@ class _RouteSplashState extends State<RouteSplash> {
   @override
   void initState()  {
     super.initState();
-    _fetchPrefs();//running initialisation code; getting prefs etc.
+    _fetchPrefs();
   }
 
   @override

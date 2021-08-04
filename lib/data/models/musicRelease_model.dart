@@ -19,11 +19,11 @@ class MusicRelease implements IDBModel {
   }
 
   @override
-  List<Container> getTableRowValues(Color rowColor, EdgeInsets rowPadding) {
+  List<Container> getTableRowValues(Color rowColor, BuildContext context, VoidCallback callback) {
     return [
-      Container(color: rowColor, padding: rowPadding, child: Text(this.title)),
-      Container(color: rowColor, padding: rowPadding, child: Text(this.type)),
-      Container(color: rowColor, padding: rowPadding, child: Text(this.releaseDate.toString())),
+      Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.title)),
+      Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.type)),
+      Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.releaseDate.toString())),
     ];
   }
 

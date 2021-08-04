@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../data_table.dart';
 import '../data/database_service.dart';
+import '../data/igdb_service.dart';
 import '../data/models/models.dart';
-import '../add_record_dialog.dart';
+import '../manage_release_form.dart';
 
 class UpcomingReleases extends StatefulWidget {
   @override
@@ -10,7 +11,8 @@ class UpcomingReleases extends StatefulWidget {
 }
 
 class _UpcomingReleasesState extends State<UpcomingReleases> {
-  List<Release> _releases = List<Release>.empty(growable: true);
+  List<Release> _releases = [];
+
 
   @override
   void initState(){
@@ -26,32 +28,33 @@ class _UpcomingReleasesState extends State<UpcomingReleases> {
     });
   }
 
-  void _addRecord() async {
-    // var databaseService = DatabaseService();
-    // var release = new Release(title: "Twelve Minutes", type: "Game", releaseDate: 0, checkDate: 1);
-    // await databaseService.insertRecord(release, 'releases');
-    // getReleases();
+  void updateReleaseDates() async {
+    var igdbService = IGDBService();
+    await igdbService.getReleaseData();
+    getReleases();
   }
 
   @override
   Widget build(BuildContext context) {
+    var callback = () => getReleases();
     return Scaffold(
       body: Center(
-        child: DataTableSanctum(_releases),
+        child: DataTableSanctum(_releases, callback),
       ),
       floatingActionButton: Container(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
         child:
           FloatingActionButton(
-            onPressed: () {
-              showDialog(
-                context: context, 
-                builder: (context) => buildPopupDialog(context)
-              ).then((_) => getReleases());
-            },
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => ManageReleaseForm(null)
+                ).then((_) => getReleases());
+              },
             child: Icon(Icons.add, color: Colors.white),
             backgroundColor: Color(0xff14C460)
           )
+
       ),
     );
   }

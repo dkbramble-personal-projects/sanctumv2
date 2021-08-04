@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../data_table.dart';
 import '../data/database_service.dart';
 import '../data/models/models.dart';
+import '../manage_rumor_form.dart';
 
 class Rumors extends StatefulWidget {
   @override
@@ -25,25 +26,23 @@ class _RumorsState extends State<Rumors> {
     });
   }
 
-  void _addRecord() async {
-    var databaseService = DatabaseService();
-    var release = new Rumor(title: "Twelve Minutes", type: "Game", releaseWindow: "2021");
-    await databaseService.insertRecord(release, 'rumors');
-    getRumors();
-  }
-
   @override
   Widget build(BuildContext context) {
+    var callback = () => getRumors();
     return Scaffold(
       body: Center(
-        child: DataTableSanctum(_rumors),
+        child: DataTableSanctum(_rumors, callback),
       ),
       floatingActionButton: Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
           child:
           FloatingActionButton(
-              onPressed: _addRecord,
-              tooltip: 'Increment',
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => ManageRumorForm(null)
+                ).then((_) => getRumors());
+              },
               child: Icon(Icons.add, color: Colors.white),
               backgroundColor: Color(0xff14C460)
           )

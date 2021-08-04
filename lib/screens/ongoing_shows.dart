@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../data_table.dart';
 import '../data/database_service.dart';
 import '../data/models/models.dart';
+import '../manage_show_form.dart';
 
 class OngoingShows extends StatefulWidget {
   @override
@@ -25,25 +26,23 @@ class _OngoingShowsState extends State<OngoingShows> {
     });
   }
 
-  void _addRecord() async {
-    var databaseService = DatabaseService();
-    var release = new OngoingShow(title: "Twelve Minutes");
-    await databaseService.insertRecord(release, 'ongoingShows');
-    getOngoingShows();
-  }
-
   @override
   Widget build(BuildContext context) {
+    var callback = () => getOngoingShows();
     return Scaffold(
       body: Center(
-        child: DataTableSanctum(_ongoingShows),
+        child: DataTableSanctum(_ongoingShows, callback),
       ),
       floatingActionButton: Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
           child:
           FloatingActionButton(
-              onPressed: _addRecord,
-              tooltip: 'Increment',
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => ManageOngoingShowForm(null)
+                ).then((_) => getOngoingShows());
+              },
               child: Icon(Icons.add, color: Colors.white),
               backgroundColor: Color(0xff14C460)
           )

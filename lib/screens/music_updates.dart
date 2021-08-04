@@ -28,7 +28,7 @@ class _MusicReleasesState extends State<MusicReleases> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: DataTableSanctum(_music),
+        child: DataTableSanctum(_music, () => {}),
       )
     );
   }

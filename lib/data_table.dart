@@ -5,18 +5,20 @@ import 'data/models/models.dart';
 //ignore: must_be_immutable
 class DataTableSanctum extends StatelessWidget  {
   late List<IDBModel> _data;
+  VoidCallback _setData = () => {};
 
-  DataTableSanctum(List<IDBModel> data) {
+  DataTableSanctum(List<IDBModel> data, VoidCallback setData) {
     _data = data;
+    _setData = setData;
   }
 
   @override
   Widget build(BuildContext context){
-    return createTable(this._data);
+    return createTable(this._data, context, this._setData);
   }
 }
 
-Widget createTable(List<IDBModel> data) {
+Widget createTable(List<IDBModel> data, BuildContext context, VoidCallback setData) {
   if (data.isEmpty) {
     return Text("Waiting For Data...");
   }
@@ -26,7 +28,7 @@ Widget createTable(List<IDBModel> data) {
   var rowPadding = EdgeInsets.symmetric(vertical: 5, horizontal: 10);
 
   headerColumnNames.forEach((columnName) {
-    headerColumns.add(Container(color: Color(0xFF212121), padding: rowPadding, child: Text(columnName)));
+    headerColumns.add(Container(color: Color(0xFF212121), padding: rowPadding, child: Text(columnName, textAlign: TextAlign.center,)));
   });
 
   List<TableRow> headerRow = [];
@@ -50,7 +52,7 @@ Widget createTable(List<IDBModel> data) {
 
   data.forEach((record)
   {
-    rows.add(TableRow( children: record.getTableRowValues(rowColor, rowPadding)));
+    rows.add(TableRow( children: record.getTableRowValues(rowColor, context, setData)));
     rowColor = rowCount % 2 == 0 ? Color(0xFF212121) : Color(0xFF424242);
     rowCount++;
   });
