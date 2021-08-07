@@ -10,7 +10,7 @@ class OngoingShows extends StatefulWidget {
 }
 
 class _OngoingShowsState extends State<OngoingShows> {
-  List<OngoingShow> _ongoingShows = List<OngoingShow>.empty(growable: true);
+  List<OngoingShow> _ongoingShows = [];
 
   @override
   void initState(){

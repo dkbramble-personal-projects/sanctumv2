@@ -20,6 +20,7 @@ class ManageRumorFormState extends State<ManageRumorForm> {
   final dateController = TextEditingController();
   var isChanging = false;
   bool isEditing = false;
+  var originalTitle = "";
   String formTitle = "New Rumor";
 
   String? _selectedType;
@@ -55,7 +56,8 @@ class ManageRumorFormState extends State<ManageRumorForm> {
       isEditing = true;
       formTitle = "Edit Rumor";
       titleController.text = rumor.title;
-      dateController.text = rumor.releaseWindow;
+      originalTitle = rumor.title;
+      dateController.text = rumor.releaseWindow ?? "";
 
       setState(() {
         isChanging = true;
@@ -91,8 +93,7 @@ class ManageRumorFormState extends State<ManageRumorForm> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                !isEditing
-                    ? TextFormField(
+                  TextFormField(
                   controller: titleController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -101,8 +102,7 @@ class ManageRumorFormState extends State<ManageRumorForm> {
                     return null;
                   },
                   decoration: InputDecoration(hintText: 'Title'),
-                )
-                    : Container(),
+                ),
                 DropdownButtonFormField(
                   value: _selectedType,
                   hint: Text('Type'),
@@ -136,7 +136,13 @@ class ManageRumorFormState extends State<ManageRumorForm> {
                           type: _selectedType ?? "Other",
                           releaseWindow: dateController.text);
 
-                      if (isEditing) {
+                      bool titleChanged = originalTitle != titleController.text;
+
+                      if(titleChanged && rumor != null) {
+                        deleteRecord(rumor);
+                      }
+
+                      if (isEditing && !titleChanged) {
                         updateRecord(record);
                       } else {
                         insertRecord(record);

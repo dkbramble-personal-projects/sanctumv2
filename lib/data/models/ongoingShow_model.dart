@@ -12,14 +12,14 @@ class OngoingShow implements IDBModel {
   });
 
   @override
-  List<String> getColumnHeaders() {
-    return ["Title"];
+  Map<String, int> getColumnHeaders() {
+    return {"Title": 1};
   }
 
   @override
-  List<Container> getTableRowValues(Color rowColor, BuildContext context, VoidCallback callback) {
+  List<Expanded> getTableRowValues(Color rowColor, BuildContext context, VoidCallback callback) {
     return [
-      Container(color: rowColor,
+    Expanded(flex:1, child: Container(color: rowColor,
           child: TextButton(
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -28,9 +28,9 @@ class OngoingShow implements IDBModel {
                 context: context,
                 builder: (context) => ManageOngoingShowForm(this)
             ).then((_) => callback()),
-            child: Text(this.title, style: TextStyle(color: Colors.white)),
+            child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
           )
-      ),
+      )),
     ];
   }
 

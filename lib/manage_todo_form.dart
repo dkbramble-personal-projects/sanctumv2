@@ -21,6 +21,7 @@ class ManageTodoFormState extends State<ManageTodoForm> {
   var isChanging = false;
   bool isEditing = false;
   String formTitle = "New Todo";
+  var originalTitle = "";
 
   String? _selectedType;
   List<String> listOfTypes = TypeValues.getTypeValues();
@@ -54,6 +55,7 @@ class ManageTodoFormState extends State<ManageTodoForm> {
       isEditing = true;
       formTitle = "Edit Todo";
       titleController.text = todo.title;
+      originalTitle = todo.title;
 
       setState(() {
         isChanging = true;
@@ -88,8 +90,7 @@ class ManageTodoFormState extends State<ManageTodoForm> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                !isEditing
-                    ? TextFormField(
+                TextFormField(
                   controller: titleController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -98,8 +99,7 @@ class ManageTodoFormState extends State<ManageTodoForm> {
                     return null;
                   },
                   decoration: InputDecoration(hintText: 'Title'),
-                )
-                    : Container(),
+                ),
                 DropdownButtonFormField(
                   value: _selectedType,
                   hint: Text('Type'),
@@ -127,7 +127,13 @@ class ManageTodoFormState extends State<ManageTodoForm> {
                           title: titleController.text,
                           type: _selectedType ?? "Other");
 
-                      if (isEditing) {
+                      bool titleChanged = originalTitle != titleController.text;
+
+                      if(titleChanged && todo != null) {
+                        deleteRecord(todo);
+                      }
+
+                      if (isEditing && !titleChanged) {
                         updateRecord(record);
                       } else {
                         insertRecord(record);

@@ -19,57 +19,34 @@ class DataTableSanctum extends StatelessWidget  {
 }
 
 Widget createTable(List<IDBModel> data, BuildContext context, VoidCallback setData) {
-  if (data.isEmpty) {
-    return Text("Waiting For Data...");
+  if (data == null || data.isEmpty) {
+    return Text("Nothing to Show...");
   }
 
   var headerColumnNames = data.first.getColumnHeaders();
-  List<Container> headerColumns = List<Container>.empty(growable: true);
+  List<Expanded> headerColumns = [];
   var rowPadding = EdgeInsets.symmetric(vertical: 5, horizontal: 10);
 
-  headerColumnNames.forEach((columnName) {
-    headerColumns.add(Container(color: Color(0xFF212121), padding: rowPadding, child: Text(columnName, textAlign: TextAlign.center,)));
+  List<IntrinsicHeight> allRows = [];
+
+  headerColumnNames.keys.forEach((columnName) {
+    headerColumns.add(Expanded(flex: headerColumnNames[columnName] ?? 1, child:Container(color: Color(0xFF212121), padding: rowPadding, child: Text(columnName, textAlign: TextAlign.center,))));
   });
 
-  List<TableRow> headerRow = [];
-  headerRow.add(TableRow( children: headerColumns));
-
-  var columnWidths = const <int, TableColumnWidth>{
-    0: FixedColumnWidth(220),
-    1: FixedColumnWidth(70),
-    2: FlexColumnWidth()
-  };
-
-  var header = Table(
-    children: headerRow,
-    columnWidths: columnWidths,
-    border: TableBorder(bottom: BorderSide(width: 1, color: Color(0xff14C460)), verticalInside: BorderSide(width: 1, color: Color(0xff14C460)) )
-  );
-
-  List<TableRow> rows = [];
+  allRows.add(IntrinsicHeight(child: Row( crossAxisAlignment: CrossAxisAlignment.stretch, children: headerColumns)));
   int rowCount = 0;
   Color rowColor = Color(0xFF424242);
 
   data.forEach((record)
   {
-    rows.add(TableRow( children: record.getTableRowValues(rowColor, context, setData)));
+    allRows.add(IntrinsicHeight(child:Row( crossAxisAlignment: CrossAxisAlignment.stretch, children: record.getTableRowValues(rowColor, context, setData))));
     rowColor = rowCount % 2 == 0 ? Color(0xFF212121) : Color(0xFF424242);
     rowCount++;
   });
 
-  var table = Table(
-    children: rows,
-    columnWidths: columnWidths,
-    border: TableBorder(verticalInside: BorderSide(width: 1, color: Colors.white)),
-  );
-
-  var bottomRowPadding = Container(color: rowColor, padding: EdgeInsets.symmetric(vertical:20,  horizontal: 0));
+  allRows.add(IntrinsicHeight(child: Container(padding: EdgeInsets.symmetric(vertical: 60),),));
 
   return ListView(
-      children: <Widget> [
-        header,
-        table,
-        bottomRowPadding
-      ]
+      children: allRows
   );
 }

@@ -17,7 +17,7 @@ class ManageOngoingShowForm extends StatefulWidget {
 class ManageOngoingShowFormState extends State<ManageOngoingShowForm> {
   final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
-
+  var originalTitle = "";
   bool isEditing = false;
   String formTitle = "New Show";
 
@@ -50,27 +50,26 @@ class ManageOngoingShowFormState extends State<ManageOngoingShowForm> {
       isEditing = true;
       formTitle = "";
       titleController.text = ongoingShow.title;
+      originalTitle = ongoingShow.title;
     }
 
     return new AlertDialog(
       title: Row(
         children: [
-          Text(formTitle),
-          isEditing ? TextButton(
+          Text(formTitle), isEditing ? Container() : TextButton(
             onPressed: () {
               var record = new OngoingShow(title: titleController.text);
               deleteRecord(record);
               Navigator.of(context).pop();
             },
             child: Text("Delete?", style: TextStyle(color: Colors.red)),
-          )  : Container()
+          )
         ],
       ),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          isEditing ? Container() :
           Form(
             key: _formKey,
             child: Column(
@@ -84,11 +83,18 @@ class ManageOngoingShowFormState extends State<ManageOngoingShowForm> {
                     return null;
                   },
                   decoration: InputDecoration(hintText: 'Title'),
-                ),
+                ), !isEditing ? Container() :
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       var record = new OngoingShow(title: titleController.text);
+
+                      bool titleChanged = originalTitle != titleController.text;
+
+                      if(titleChanged && ongoingShow != null) {
+                        deleteRecord(ongoingShow);
+                      }
+
                       insertRecord(record);
 
                       Navigator.of(context).pop();

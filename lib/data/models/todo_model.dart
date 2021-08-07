@@ -14,14 +14,14 @@ class Todo implements IDBModel {
   });
 
   @override
-  List<String> getColumnHeaders() {
-    return ["Title", "Type"];
+  Map<String, int> getColumnHeaders() {
+    return {"Title":2, "Type":2};
   }
 
   @override
-  List<Container> getTableRowValues(Color rowColor, BuildContext context, VoidCallback callback) {
+  List<Expanded> getTableRowValues(Color rowColor, BuildContext context, VoidCallback callback) {
     return [
-      Container(color: rowColor,
+      Expanded(flex:2, child: Container(color: rowColor,
           child: TextButton(
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -30,10 +30,10 @@ class Todo implements IDBModel {
                 context: context,
                 builder: (context) => ManageTodoForm(this)
             ).then((_) => callback()),
-            child: Text(this.title, style: TextStyle(color: Colors.white),),
+            child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
           )
-      ),
-      Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.type, textAlign: TextAlign.center)),
+      )),
+      Expanded(flex:2, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.type, textAlign: TextAlign.center))),
     ];
   }
 

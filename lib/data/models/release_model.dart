@@ -19,12 +19,12 @@ class Release implements IDBModel {
 
 
   @override
-  List<String> getColumnHeaders() {
-    return ["Title", "Type", "Days Left"];
+  Map<String, int> getColumnHeaders() {
+    return {"Title": 2, "Type": 1, "Days Left": 1};
   }
 
   @override
-  List<Container> getTableRowValues(Color rowColor, BuildContext context, VoidCallback callback) {
+  List<Expanded> getTableRowValues(Color rowColor, BuildContext context, VoidCallback callback) {
 
     var utcDate = DateTime.now().toUtc();
     var currentUtcDate = DateTime.now().toUtc();
@@ -40,20 +40,20 @@ class Release implements IDBModel {
     }
 
     return [
-      Container(color: rowColor,
+      Expanded(flex:2, child: Container(color: rowColor,
           child: TextButton(
             style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             ),
             onPressed: () => showDialog(
                 context: context,
                 builder: (context) => ManageReleaseForm(this)
             ).then((_) => callback()),
-            child: Text(this.title, style: TextStyle(color: Colors.white)),
-          )
-      ),
-      Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.type, textAlign: TextAlign.center)),
-      Container(color: countColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text( hasRelease ? dayCount.toString() : "", textAlign: TextAlign.center)),
+            child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
+          ),
+      )),
+      Expanded(flex: 1, child:Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.type, textAlign: TextAlign.center))),
+      Expanded(flex: 1, child:Container(color: countColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text( hasRelease ? dayCount.toString() : "", textAlign: TextAlign.center))),
     ];
   }
 

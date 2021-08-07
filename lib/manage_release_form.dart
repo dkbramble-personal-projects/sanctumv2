@@ -21,6 +21,7 @@ class ManageReleaseFormState extends State<ManageReleaseForm> {
   var isChanging = false;
   bool isChecked = false;
   bool isEditing = false;
+  var originalTitle = "";
   String formTitle = "New Release";
 
   String? _selectedType;
@@ -58,6 +59,7 @@ class ManageReleaseFormState extends State<ManageReleaseForm> {
       isEditing = true;
       formTitle = "Edit Release";
       titleController.text = release.title;
+      originalTitle = release.title;
 
       var date = DateTime.fromMillisecondsSinceEpoch(release.releaseDate * 1000);
       var monthString = date.month.toString();
@@ -101,9 +103,7 @@ class ManageReleaseFormState extends State<ManageReleaseForm> {
           Form(
             key: _formKey,
             child: Column(
-              children: <Widget>[
-                !isEditing
-                    ? TextFormField(
+              children: <Widget>[ TextFormField(
                         controller: titleController,
                         autocorrect: false,
                         validator: (value) {
@@ -113,8 +113,7 @@ class ManageReleaseFormState extends State<ManageReleaseForm> {
                           return null;
                         },
                         decoration: InputDecoration(hintText: 'Title'),
-                      )
-                    : Container(),
+                      ),
                 DropdownButtonFormField(
                   value: _selectedType,
                   hint: Text('Type'),
@@ -174,7 +173,13 @@ class ManageReleaseFormState extends State<ManageReleaseForm> {
                           releaseDate: dateVal,
                           checkDate: isChecked ? 1 : 0);
 
-                      if (isEditing) {
+                      bool titleChanged = originalTitle != titleController.text;
+
+                      if(titleChanged && release != null) {
+                        deleteRecord(release);
+                      }
+
+                      if (isEditing && !titleChanged) {
                         updateRecord(record);
                       } else {
                         insertRecord(record);

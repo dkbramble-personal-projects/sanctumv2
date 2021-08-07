@@ -12,11 +12,11 @@ class _NavigationBarState extends State<NavigationBar> {
   int _currentIndex = 2;
 
   final List<Widget> _children = [
+    OngoingShows(),
     Rumors(),
-    Todos(),
     UpcomingReleases(),
-    MusicReleases(),
-    OngoingShows()
+    Todos(),
+    MusicReleases()
   ];
 
   void setIndex(int index) {
@@ -32,11 +32,11 @@ class _NavigationBarState extends State<NavigationBar> {
       bottomNavigationBar: ConvexAppBar(
         style: TabStyle.react,
         items: [
-          TabItem(icon: Icons.help, title: 'Rumors'),
-          TabItem(icon: Icons.list, title: 'Todo'),
-          TabItem(icon: Icons.calendar_today, title: 'Upcoming' ),
-          TabItem(icon: Icons.play_arrow_rounded, title: 'Music'),
           TabItem(icon: Icons.theaters, title: 'Ongoing'),
+          TabItem(icon: Icons.help, title: 'Rumors'),
+          TabItem(icon: Icons.calendar_today, title: 'Upcoming' ),
+          TabItem(icon: Icons.list, title: 'Todo'),
+          TabItem(icon: Icons.play_arrow_rounded, title: 'Music')
         ],
         initialActiveIndex: 2,//optional, default as 0
         onTap: (int i) => setIndex(i),
