@@ -30,10 +30,10 @@ class Todo implements IDBModel {
                 context: context,
                 builder: (context) => ManageTodoForm(this)
             ).then((_) => callback()),
-            child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
+            child: Center( child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),),
           )
       )),
-      Expanded(flex:2, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.type, textAlign: TextAlign.center))),
+      Expanded(flex:2, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Center( child: Text(this.type, textAlign: TextAlign.center)))),
     ];
   }
 

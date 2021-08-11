@@ -28,7 +28,7 @@ class OngoingShow implements IDBModel {
                 context: context,
                 builder: (context) => ManageOngoingShowForm(this)
             ).then((_) => callback()),
-            child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
+            child: Center( child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white))),
           )
       )),
     ];

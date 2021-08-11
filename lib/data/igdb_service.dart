@@ -101,11 +101,4 @@ class IGDBService {
     }
   }
 
-
-
-  // Map<String, dynamic> userMap = jsonDecode(jsonString);
-  // var user = User.fromJson(userMap);
-  //
-  // print('Howdy, ${user.name}!');
-  // print('We sent the verification link to ${user.email}.');
 }

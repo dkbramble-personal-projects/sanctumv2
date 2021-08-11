@@ -37,25 +37,17 @@ class _MusicReleasesState extends State<MusicReleases> {
     var spoofyService = SpoofyService();
     await spoofyService.fetchMusicData();
     await getLocalReleases();
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _isFetching ? CircularProgressIndicator() : DataTableSanctum(_music, () => {}),
-      ),
-      floatingActionButton: Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-          child:
-          FloatingActionButton(
-              onPressed: () {
-                getReleases();
-              },
-              child: Icon(Icons.refresh, color: Colors.white),
-              backgroundColor: Color(0xff14C460)
-          )
+        child: _isFetching ? CircularProgressIndicator() : Container( child:
+        RefreshIndicator(
+          child: DataTableSanctum(_music, () => {}),
+          onRefresh: () async => getReleases(),
+        )),
       ),
     );
   }

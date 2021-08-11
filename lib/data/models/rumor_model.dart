@@ -32,11 +32,11 @@ class Rumor implements IDBModel {
                 context: context,
                 builder: (context) => ManageRumorForm(this)
             ).then((_) => callback()),
-            child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
+            child: Center(child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),),
           )
       )),
-    Expanded(flex:1, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.type, textAlign: TextAlign.center))),
-    Expanded(flex:1, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.releaseWindow ?? "", textAlign: TextAlign.center))),
+    Expanded(flex:1, child:Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Center(child: Text(this.type, textAlign: TextAlign.center)))),
+    Expanded(flex:1, child:Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Center(child: Text(this.releaseWindow ?? "", textAlign: TextAlign.center)))),
     ];
   }
 

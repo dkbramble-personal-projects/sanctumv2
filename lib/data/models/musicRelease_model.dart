@@ -28,10 +28,10 @@ class MusicRelease implements IDBModel {
     var date = DateTime.fromMillisecondsSinceEpoch(this.releaseDate * 1000).toUtc();
 
     return [
-      Expanded(flex:3, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.title, textAlign: TextAlign.center, style: TextStyle(color: Colors.white, )))),
-      Expanded(flex:2, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5), child: Text(this.artist, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)))),
-      Expanded(flex:1, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(this.type, textAlign: TextAlign.center, style: TextStyle(color: Colors.white)))),
-      Expanded(flex:1, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Text(date.month.toString() + "/" + date.day.toString(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white)))),
+      Expanded(flex:3, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Center( child: Text(this.title, textAlign: TextAlign.center,  style: TextStyle(color: Colors.white, ))))),
+      Expanded(flex:2, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5), child: Center( child: Text(this.artist, textAlign: TextAlign.center, style: TextStyle(color: Colors.white))))),
+      Expanded(flex:1, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Center( child: Text(this.type, textAlign: TextAlign.center, style: TextStyle(color: Colors.white))))),
+      Expanded(flex:1, child: Container(color: rowColor, padding: EdgeInsets.symmetric(vertical: 15), child: Center( child:Text(date.month.toString() + "/" + date.day.toString(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white))))),
     ];
   }
 

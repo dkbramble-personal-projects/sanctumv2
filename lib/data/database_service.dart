@@ -110,9 +110,6 @@ class DatabaseService {
   Future<int> updateRecord(IDBModel record, String table) async {
     final db = database;
 
-    print("Updating Record");
-    print(record);
-
     int response = await db.update(
       table,
       record.toMap(),

@@ -5,6 +5,7 @@ import '../data/igdb_service.dart';
 import '../data/models/models.dart';
 import '../manage_release_form.dart';
 
+
 class UpcomingReleases extends StatefulWidget {
   @override
   _UpcomingReleasesState createState() => _UpcomingReleasesState();
@@ -12,7 +13,6 @@ class UpcomingReleases extends StatefulWidget {
 
 class _UpcomingReleasesState extends State<UpcomingReleases> {
   List<Release> _releases = [];
-
 
   @override
   void initState(){
@@ -38,9 +38,11 @@ class _UpcomingReleasesState extends State<UpcomingReleases> {
   Widget build(BuildContext context) {
     var callback = () => getReleases();
     return Scaffold(
-      body: Center(
-        child: DataTableSanctum(_releases, callback),
-      ),
+      body:Container( child:
+        RefreshIndicator(
+            child: DataTableSanctum(_releases, callback),
+            onRefresh: () async => updateReleaseDates(),
+      )),
       floatingActionButton: Container(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
         child:
@@ -59,3 +61,4 @@ class _UpcomingReleasesState extends State<UpcomingReleases> {
     );
   }
 }
+
