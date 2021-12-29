@@ -40,4 +40,8 @@ class OngoingShow implements IDBModel {
       'title': title,
     };
   }
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+  };
 }

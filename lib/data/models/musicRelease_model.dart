@@ -50,4 +50,11 @@ class MusicRelease implements IDBModel {
         releaseDate = dayCount,
         type = json['album_type'],
         artist = artistName;
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'type': type,
+    'releaseDate': releaseDate,
+    'artist': artist
+  };
 }

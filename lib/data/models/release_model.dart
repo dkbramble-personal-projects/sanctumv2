@@ -34,7 +34,9 @@ class Release implements IDBModel {
 
     if (hasRelease){
       utcDate = DateTime.fromMillisecondsSinceEpoch(this.releaseDate * 1000).toUtc();
-      currentUtcDate = DateTime.now().toUtc();
+      var nowDate = DateTime.now();
+      currentUtcDate = new DateTime(nowDate.year, nowDate.month, nowDate.day);
+      currentUtcDate = currentUtcDate.toUtc();
       dayCount = (utcDate.difference(currentUtcDate).inHours / 24).round();
       countColor = dayCount < 1 ? Color(0xff14C460) : rowColor;
     }
@@ -66,4 +68,11 @@ class Release implements IDBModel {
       'checkDate': checkDate,
     };
   }
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'type': type,
+    'releaseDate': releaseDate,
+    'checkDate': checkDate,
+  };
 }

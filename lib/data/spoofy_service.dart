@@ -8,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'database_service.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:wakelock/wakelock.dart';
 
 class SpoofyService {
   static final SpoofyService _databaseService = SpoofyService._internal();
@@ -20,6 +21,12 @@ class SpoofyService {
   SpoofyService._internal();
 
   Future<int> fetchMusicData() async {
+    bool wakelockEnabled = await Wakelock.enabled;
+    bool useWakeLock = false;
+    if (!wakelockEnabled){
+      useWakeLock = true;
+      Wakelock.enable();
+    }
     var artists = await getArtists();
     List<MusicRelease> newReleases = [];
     for (var artist in artists){
@@ -37,6 +44,10 @@ class SpoofyService {
     newReleases.forEach((release) async {
       await db.insertRecord(release, "musicReleases");
     });
+
+    if (useWakeLock){
+      Wakelock.disable();
+    }
 
     return 0;
   }

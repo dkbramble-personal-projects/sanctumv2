@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sanctumv2/data/spoofy_service.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/widgets.dart';
 import 'models/models.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:ext_storage/ext_storage.dart';
 
 
 class DatabaseService {
@@ -272,5 +275,29 @@ class DatabaseService {
     ongoingShowList.sort((a,b) => a.title.compareTo(b.title));
 
     return ongoingShowList;
+  }
+
+  Future<void> exportDataToJsonFile() async {
+    if (await Permission.storage.request().isGranted) {
+      print("YES");
+      var releases = await getReleases();
+      var todos = await getTodos();
+      var ongoing = await getOngoingShows();
+      var rumors = await getRumors();
+
+      var releasesJson = jsonEncode(releases);
+      var todosJson = jsonEncode(todos);
+      var ongoingJson = jsonEncode(ongoing);
+      var rumorsJson = jsonEncode(rumors);
+
+      var jsonDataString = "{"
+          + "\"releases\": " + releasesJson + ","
+          + "\"todos\": " + todosJson + ","
+          + "\"ongoing\": " + ongoingJson + ","
+          + "\"rumors\": " + rumorsJson + "}";
+      var path = await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
+      var file = File('$path/Sanctum/data.json');
+      file.writeAsString(jsonDataString);
+    }
   }
 }

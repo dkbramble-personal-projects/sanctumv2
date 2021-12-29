@@ -14,6 +14,7 @@ class _RouteSplashState extends State<RouteSplash> {
   _fetchPrefs() async {
     await DatabaseService().setupDB();
     await IGDBService().getReleaseData();
+    await DatabaseService().exportDataToJsonFile();
 
     setState(() {
       shouldProceed = true;//got the prefs; set to some value if needed

@@ -48,4 +48,9 @@ class Rumor implements IDBModel {
       'releaseWindow': releaseWindow,
     };
   }
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'type': type,
+  };
 }

@@ -56,7 +56,7 @@ class ManageOngoingShowFormState extends State<ManageOngoingShowForm> {
     return new AlertDialog(
       title: Row(
         children: [
-          Text(formTitle), isEditing ? Container() : TextButton(
+          Text(formTitle), !isEditing ? Container() : TextButton(
             onPressed: () {
               var record = new OngoingShow(title: titleController.text);
               deleteRecord(record);
@@ -83,7 +83,7 @@ class ManageOngoingShowFormState extends State<ManageOngoingShowForm> {
                     return null;
                   },
                   decoration: InputDecoration(hintText: 'Title'),
-                ), !isEditing ? Container() :
+                ),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {

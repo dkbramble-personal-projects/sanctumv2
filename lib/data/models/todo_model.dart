@@ -44,4 +44,9 @@ class Todo implements IDBModel {
       'type': type,
     };
   }
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'type': type,
+  };
 }

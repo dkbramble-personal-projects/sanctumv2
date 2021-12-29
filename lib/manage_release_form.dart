@@ -42,6 +42,13 @@ class ManageReleaseFormState extends State<ManageReleaseForm> {
     await databaseService.deleteRecord(record, 'releases');
   }
 
+  void moveToTodo(Release record) async {
+    var databaseService = DatabaseService();
+    await databaseService.deleteRecord(record, 'releases');
+    var todo = new Todo(title: record.title, type: record.type);
+    await databaseService.insertRecord(todo, 'todos');
+  }
+
   @override
   void dispose() {
     titleController.dispose();
@@ -61,13 +68,12 @@ class ManageReleaseFormState extends State<ManageReleaseForm> {
       titleController.text = release.title;
       originalTitle = release.title;
 
-      var date = DateTime.fromMillisecondsSinceEpoch(release.releaseDate * 1000);
-      var monthString = date.month.toString();
-      var dayString = date.day.toString();
+      if (release.releaseDate != -1) {
+        var date = DateTime.fromMillisecondsSinceEpoch(release.releaseDate * 1000);
+        var dateString = date.toIso8601String().substring(0, 10);
 
-      if (monthString.length == 1) monthString = "0" + monthString;
-      if (dayString.length == 1) dayString = "0" + dayString;
-      dateController.text = date.year.toString() + "-" + monthString + "-" + dayString;
+        dateController.text = dateString;
+      }
 
       setState(() {
         isChanging = true;
@@ -80,20 +86,6 @@ class ManageReleaseFormState extends State<ManageReleaseForm> {
       title: Row(
         children: [
           Text(formTitle),
-          isEditing
-              ? TextButton(
-                  onPressed: () {
-                    var record = new Release(
-                        title: titleController.text,
-                        type: _selectedType ?? "Other",
-                        releaseDate: DateTime.parse(dateController.text).millisecondsSinceEpoch * 1000,
-                        checkDate: isChecked ? 1 : 0);
-                    deleteRecord(record);
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Delete", style: TextStyle(color: Colors.red)),
-                )
-              : Container(),
         ],
       ),
       content: new Column(
@@ -159,10 +151,42 @@ class ManageReleaseFormState extends State<ManageReleaseForm> {
                         }),
                   ],
                 ),
+                isEditing
+                    ? Row(
+                    children: [TextButton(
+                      onPressed: () {
+                        var date = DateTime.tryParse(dateController.text);
+                        var dateVal = date != null ? date.millisecondsSinceEpoch * 1000 : -1;
+                        if (date != null){
+
+                        }
+                        var record = new Release(
+                            title: titleController.text,
+                            type: _selectedType ?? "Other",
+                            releaseDate: dateVal,
+                            checkDate: isChecked ? 1 : 0);
+                        deleteRecord(record);
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("Delete", style: TextStyle(color: Colors.red)),
+                    ),
+                      TextButton(
+                        onPressed: () {
+                          var record = new Release(
+                              title: titleController.text,
+                              type: _selectedType ?? "Other",
+                              releaseDate: DateTime.parse(dateController.text).millisecondsSinceEpoch * 1000,
+                              checkDate: isChecked ? 1 : 0);
+                          moveToTodo(record);
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("Move To Todo", style: TextStyle(color: Colors.white)),
+                      ),])
+                    : Container(),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      var date = DateTime.tryParse(dateController.text);
+                      var date = DateTime.tryParse(dateController.text)?.toUtc();
                       var dateVal = -1;
                       if (date != null){
                         dateVal = date.millisecondsSinceEpoch ~/ 1000;

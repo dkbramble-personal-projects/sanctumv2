@@ -12,8 +12,4 @@ class IDGBGameRelease {
       : name = json['name'],
         firstReleaseDate = json['first_release_date'];
 
-  // Map<String, dynamic> toJson() => {
-  //   'name': name,
-  //   'email': email,
-  // };
 }
